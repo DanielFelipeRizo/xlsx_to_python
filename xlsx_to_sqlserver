@@ -1,0 +1,39 @@
+import openpyxl
+import pandas as pd
+
+archive_xlsx = 'C:\\Users\\\Public\\Documents\\tarjetas virtuales 21 10.xlsx'
+# archive_xlsx = 'C:\\Users\\\Public\\Documents\\6.10 WPOSS TV.xlsx'
+
+# Abre el archivo XLSX
+archive_workbook = openpyxl.load_workbook(archive_xlsx)
+
+# Selecciona una hoja específica (en este caso, la primera hoja)
+excel_sheet = archive_workbook.active
+
+# Itera a través de las filas de la hoja
+for row in excel_sheet.iter_rows(values_only=True):
+    # Accede a cada una de las posiciones (columnas) en cada fila
+    asfi = str(row[0]).strip()  # Primera columna(nombre asfi)
+    id_cor_old = str(row[1]).strip()  # Segunda columna(id corresponsal_antiguo)
+    tar_v_old = str(row[2]).strip()  # Tercera columna(tarjeta virtual antigua)
+    id_cor_new = str(row[3]).strip()  # Cuarta columna(id corresponsal nuevo)
+    tar_v_new = str(row[4]).strip()  # quinta columna(tarjeta virtual nueva)
+
+
+    # actualizar asfi
+    # stringUpdateAsfi = f"update merchants set asfi_comercio = '{asfi}' where merchant_id in (select merchant_id from sucursales where card_accp_merch = '{id_cor_old}' and nroCcaBancosol = '{tar_v_old}');"
+    # print(stringUpdateAsfi)
+
+
+    # actualizar representante
+    # stringUpdateRep = f"update representante set numero_tarjeta_virtual = '{tar_v_new}' where numero_tarjeta_virtual = '{tar_v_old}';"
+    # print(stringUpdateRep)
+
+
+    # actualizar corresponsal id y tarjetas virtuales
+    stringUpdateSucursales = (f"update sucursales set card_accp_merch = '{id_cor_new}', nroCcaBancosol = '{tar_v_new}' "
+                    f"where card_accp_merch = '{id_cor_old}' and nroCcaBancosol = '{tar_v_old}';")
+    print(stringUpdateSucursales)
+
+# Cierra el archivo XLSX después de leerlo
+archive_workbook.close()
